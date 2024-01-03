@@ -1,0 +1,143 @@
+import { create } from "zustand";
+import { immer } from "zustand/middleware/immer";
+import { devtools, persist } from "zustand/middleware";
+import CartItemProps from "./slices/_type";
+import { nanoid } from "nanoid";
+
+interface State {
+  cart: {
+    items: CartItemProps[];
+  };
+  addItem(payload: any): void;
+  removeItem(payload: any): void;
+  increaseQuantity(payload: any): void;
+  decreaseQuantity(payload: any): void;
+  clearCart(): void;
+}
+
+const cart = {
+  items: [],
+  totalPrice: 0,
+  coupon: null,
+  extraDelivery: {
+    amount: 0,
+    name: `Free Kerb side delivery to the door (Flat or apartments Ground floor
+          communal area only)`,
+  },
+};
+
+const useCartStore = create<State>()(
+  devtools(
+    persist(
+      immer((set) => ({
+        cart,
+        addItem(payload) {
+          set((state) => {
+            const item = payload;
+            //  found item with same accessories
+
+            const foundItem = checkForSameAccessoryAndGetData(
+              state.items,
+              item.accessories
+            );
+
+            const accessories = item.accessories;
+            const sameAccessory = checkForSameAccessory(
+              state.items,
+              accessories
+            );
+
+            if (foundItem) {
+              if (sameAccessory && item.bed.size === foundItem.bed.size) {
+                foundItem.quantity++;
+                state.totalPrice += foundItem.total;
+              } else {
+                state.items.push(item);
+                state.totalPrice += item.total;
+              }
+            } else {
+              state.items.push({ ...item, id: nanoid(8) });
+              state.totalPrice += item.total * item.quantity;
+            }
+          });
+        },
+
+        removeItem(payload) {
+          set((state) => {
+            const id = payload;
+            const foundItem = state.items.find((item) => item.id === id);
+            if (foundItem) {
+              state.totalPrice -= foundItem.total * foundItem.quantity;
+              state.items = state.items.filter((item) => item.id !== id);
+            }
+          });
+        },
+
+        increaseQuantity(payload) {
+          const id = payload;
+
+          set((state) => {
+            const foundItem = state.items.find((item) => item.id === id);
+            if (foundItem) {
+              foundItem.quantity++;
+              state.totalPrice += foundItem.total;
+            }
+          });
+        },
+
+        decreaseQuantity(payload) {
+          set((state) => {
+            const id = payload;
+            const foundItem = state.items.find((item) => item.id === id);
+
+            if (foundItem) {
+              foundItem.quantity--;
+              state.totalPrice -= foundItem.total;
+            }
+          });
+        },
+
+        clearCart() {
+          set((state) => {
+            state.items = [];
+            state.totalPrice = 0;
+          });
+        },
+      })),
+      {
+        name: "cart",
+      }
+    )
+  )
+);
+
+export default useCartStore;
+
+const checkForSameAccessory = (items: CartItemProps[], accessories: any) => {
+  const findItem = items.find(
+    (cartItem) =>
+      cartItem?.accessories?.color?._id === accessories?.color?._id &&
+      cartItem?.accessories?.headboard?._id === accessories?.headboard?._id &&
+      cartItem?.accessories?.storage?._id === accessories?.storage?._id &&
+      cartItem?.accessories?.feet?._id === accessories?.feet?._id &&
+      cartItem?.accessories?.mattress?._id === accessories?.mattress?._id &&
+      cartItem?.accessories?.color?._id === accessories?.color?._id
+  );
+  return !!findItem;
+};
+
+const checkForSameAccessoryAndGetData = (
+  items: CartItemProps[],
+  accessories: any
+) => {
+  const findItem = items?.find(
+    (cartItem) =>
+      cartItem?.accessories?.color?._id === accessories?.color?._id &&
+      cartItem?.accessories?.headboard?._id === accessories?.headboard?._id &&
+      cartItem?.accessories?.storage?._id === accessories?.storage?._id &&
+      cartItem?.accessories?.feet?._id === accessories?.feet?._id &&
+      cartItem?.accessories?.mattress?._id === accessories?.mattress?._id &&
+      cartItem?.accessories?.color?._id === accessories?.color?._id
+  );
+  return findItem;
+};

@@ -1,0 +1,348 @@
+.mattresspage {
+  color: #00b2bd;
+  font-weight: 800;
+  font-size: 44px;
+  font-size: 44px;
+  margin-top: 50px;
+}
+.mtresp p {
+  color: #fff;
+  font-size: 15px;
+}
+.ShopMobile button {
+  letter-spacing: 2px;
+  -webkit-box-shadow: 0px 8px 15px rgb(0 0 0 / 10%);
+  box-shadow: 0px 8px 15px rgb(0 0 0 / 10%);
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  color: #ffffff;
+  padding: 9px 27px 9px 27px;
+  background-color: #ec9e17;
+  border-radius: 42px;
+  font-size: 16px;
+  font-weight: 300;
+  border: none;
+}
+.mtrsBannr {
+  background-image: url(/assets/images/banner/Group487.svg);
+  background-color: #e7e7e7;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.mtrs2Sction {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
+  margin: 0;
+}
+.scnd_sct {
+  background-color: #ec9e17;
+}
+.scnd_scttxt h3 {
+  color: #141414;
+  font-size: 28px;
+  text-align: center;
+  padding: 15px;
+}
+.scnd_sct1 {
+  padding-top: 50px;
+}
+.sectionTitle h2 {
+  color: #222178;
+  font-weight: 700;
+  margin-bottom: 15px;
+  font-size: 42px;
+  text-align: center;
+}
+.size_box {
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+}
+.size_box .singleBox {
+  padding: 14px 60px;
+}
+.singleBox {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
+  margin: 0;
+}
+// size_box img {
+//   display: inline-block;
+//   max-width: 100%;
+//   overflow: hidden;
+//   position: relative;
+// }
+.singleBoxImg {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+.singleBoxImg11 {
+  box-sizing: border-box;
+  display: block;
+  max-width: 100%;
+}
+.BoxImg {
+  max-width: 100%;
+  display: block;
+  margin: 0;
+  border: none;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  box-sizing: border-box;
+  padding: 0;
+  border: none;
+  margin: auto;
+  display: block;
+  width: 0;
+  height: 0;
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  max-height: 100%;
+}
+.boxtxt {
+  color: #222178;
+}
+.sectionTitle {
+  font-weight: 600;
+  font-size: 18px;
+  text-align: center;
+}
+.sectionTitle hr {
+  width: 44%;
+  margin: 0 auto;
+  height: 2px !important;
+  background-color: currentColor;
+  border: 0;
+  opacity: 0.25;
+  margin-top: 40px;
+}
+.mattressExcusive h2 {
+  color: #222178;
+  font-weight: 600;
+  text-shadow: 0px 1px 1px #909090e0;
+}
+.mattressExcusive h6 {
+  margin-bottom: 5px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+.mtrButton button {
+  color: #ffffff;
+  background-color: #f22222;
+  padding: 7px 35px 7px 35px;
+  border-radius: 0px;
+  font-size: 18px;
+  margin: auto;
+  font-weight: 300;
+  margin-bottom: 13px;
+  border: none;
+  margin-top: 20px;
+}
+.mattressExcusive {
+  background-color: #fff;
+  padding: 30px;
+}
+.exclusive_img {
+  //   background-image: url(/assets/images/mattressbanner/All-beds.png);
+  background-image: url(/assets/images/mattressbanner/Allbeds.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+}
+.mExcusive {
+  padding-bottom: 40px;
+  padding-top: 80px;
+}
+.shpbysze {
+  background-color: #f3f3f8;
+}
+.shpcolor {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+.firmmatrress {
+  background-color: #1e196c;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+.DivanPageH2 h2 {
+  margin-top: 10px;
+  font-size: 36px;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 44px;
+}
+.DivanPageH2 p {
+  color: #ffffff;
+  font-size: 15px;
+  margin-top: 20px !important;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+.DivanPageH2 button {
+  color: #ffffff;
+  background-color: #f22222;
+  padding: 9px;
+  border-radius: 0px;
+  padding-left: 33px;
+  padding-right: 37px;
+  font-size: 18px;
+  padding-top: 7px;
+  padding-bottom: 5px;
+}
+.ourexllsve h4 {
+  color: #f22222;
+  text-align: center;
+}
+.ourexllsve h2 {
+  color: #222178;
+  font-weight: 800;
+  margin-top: 10px !important;
+  text-align: center;
+}
+.ourexllsve p {
+  color: #7c7c7c;
+  font-size: 15px;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+.tabs {
+  width: 100%;
+}
+.productname {
+  font-size: 12px;
+  color: #0e3f70;
+  font-weight: 800;
+
+  padding-top: 10px;
+  padding-left: 10px;
+}
+.price {
+  font-size: 20px;
+  font-weight: 700;
+
+  color: #008849;
+  padding-left: 10px;
+}
+.box1 {
+  border: 1px solid #80808063;
+  padding-bottom: 70px;
+  width: 260px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+.productsimages {
+  margin-top: 30px;
+  padding-bottom: 30px;
+}
+.viewAllProduct {
+  color: #ffffff;
+  background-color: rgb(38, 40, 132);
+  border-radius: 6px;
+  font-size: 15px;
+  padding: 12px 20px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  margin-top: 37px;
+  border: none;
+}
+.viewAllProductTab {
+  margin: 0px auto;
+  width: fit-content;
+  display: block;
+}
+.prdtSecttn {
+  padding-top: 40px;
+}
+.ourexllsve button {
+  letter-spacing: 2px;
+  -webkit-box-shadow: 0px 8px 15px rgb(0 0 0 / 10%);
+  box-shadow: 0px 8px 15px rgb(0 0 0 / 10%);
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  color: #ffffff;
+  padding: 9px 27px 9px 27px;
+  background-color: #00b2bc;
+  border-radius: 42px;
+  font-size: 16px;
+  font-weight: 300;
+  border: none;
+  margin: 20px auto;
+  display: block;
+  width: fit-content;
+}
+.mExcusivep {
+  padding: 0;
+}
+.mydiv2 {
+  h1 {
+    font-weight: 700;
+    font-size: 34px;
+    color: #17175f;
+    margin-top: 40px;
+    margin-bottom: 28px;
+    text-align: center;
+  }
+}
+.bedicon {
+  .bedbox {
+    margin-left: 38px;
+
+    p {
+      text-align: center;
+      font-size: 14px;
+
+      font-weight: 600;
+      margin-top: 18px;
+    }
+    img {
+      width: 80px;
+      height: 75px;
+      margin: 0 auto;
+      display: block;
+    }
+  }
+}
+.mydiv6 {
+  .colorbox {
+    img {
+      height: 60px;
+      width: 110px;
+    }
+  }
+}
+.mydiv6heading {
+  h1 {
+    text-align: center;
+
+    font-size: 38px;
+    padding: 30px 0px 40px;
+    font-weight: 700;
+    color: #0a3459;
+  }
+}
+.bedicon {
+  padding-top: 35px;
+  padding-bottom: 35px;
+}

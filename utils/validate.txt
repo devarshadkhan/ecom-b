@@ -1,0 +1,23 @@
+import * as Yup from "yup";
+
+const schema = Yup.string()
+  .required()
+  .matches(/^[0-9]+$/, "Must be only digits")
+  .min(5, "Must be exactly 5 digits")
+  .max(5, "Must be exactly 5 digits");
+
+const validate = v => {
+  try {
+    schema.validateSync(v);
+    console.log("%s is valid", v);
+  } catch (err) {
+    console.log(v, err.message);
+  }
+};
+
+validate("12f1");
+validate("123");
+validate("123456");
+validate("01234");
+validate("11106");
+validate("DN55 1PT");

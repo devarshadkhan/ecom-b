@@ -1,0 +1,371 @@
+.mydiv {
+  background: linear-gradient(90deg, rgb(214 212 249) 75%, rgb(48 164 229) 75%);
+  button {
+    background-color: red;
+    color: #fff;
+    border-color: red;
+    padding: 10px 20px;
+    border: none;
+    text-transform: uppercase;
+
+    border-radius: 34px;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  h1 {
+    font-size: 34px;
+
+    color: #2d89db;
+    max-width: 325px;
+    margin-top: 50px;
+    margin-bottom: 30px;
+  }
+  p {
+    font-size: 18px;
+    line-height: 28px;
+    margin-bottom: 35px;
+  }
+  img {
+    width: 620px;
+    height: 380px;
+    position: relative;
+    left: 30px;
+  }
+  .box2 {
+    border-bottom: 1px solid #8080804f;
+  }
+}
+.mydiv1 {
+  background-color: #edb213;
+  padding: 15px 0 6px;
+  margin-top: 10px;
+  h1 {
+    text-align: center;
+
+    font-weight: 500;
+    font-size: 24px;
+  }
+}
+.mydiv2 {
+  background-color: #d3d3e3;
+  h1 {
+    font-weight: 700;
+    font-size: 34px;
+    color: #17175f;
+    margin-top: 40px;
+    margin-bottom: 28px;
+    text-align: center;
+  }
+}
+.bedicon {
+  background-color: #d3d3e3;
+  padding-top: 20px;
+  .bedbox {
+    margin-left: 38px;
+
+    p {
+      text-align: center;
+      font-size: 14px;
+
+      font-weight: 600;
+      margin-top: 18px;
+    }
+    img {
+      width: 80px;
+      height: 75px;
+      margin: 0 auto;
+      display: block;
+    }
+  }
+}
+.bedicon2 {
+  background-color: #fff;
+  .bedbox {
+    margin-left: 38px;
+
+    p {
+      text-align: center;
+      font-size: 14px;
+
+      font-weight: 600;
+      margin-top: 18px;
+    }
+    img {
+      width: 80px;
+      height: 75px;
+      margin: 0 auto;
+      display: block;
+    }
+  }
+}
+.mydiv4 {
+  background-color: #d3d3e3;
+  h2 {
+    text-align: center;
+    margin-top: 36px;
+    color: #0a3459;
+    font-size: 30px;
+
+    font-weight: 600;
+  }
+  p {
+    margin-top: 20px;
+    line-height: 32px;
+    font-weight: 600;
+    border-bottom: 1px solid #d2bbbb;
+    padding-bottom: 24px;
+
+    text-align: center;
+  }
+}
+.mydiv6 {
+  .colorbox {
+    img {
+      height: 60px;
+      width: 110px;
+    }
+  }
+}
+.mydiv6heading {
+  h1 {
+    text-align: center;
+
+    font-size: 38px;
+    padding: 30px 0px 40px;
+    font-weight: 700;
+    color: #0a3459;
+  }
+}
+.mydiv7 {
+  background-image: url(/image/fridaybanner.webp);
+  padding: 50px 0 0;
+  margin-top: 80px;
+  margin-bottom: 50px;
+  background-color: #651d37;
+  h1 {
+    font-size: 40px;
+    text-transform: capitalize;
+
+    color: #fff;
+  }
+  p {
+    color: #fff;
+
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 18px;
+    line-height: 25px;
+    margin-bottom: 40px;
+  }
+  button {
+    padding: 8px 25px;
+    background-color: red;
+    border-color: red;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 22px;
+
+    text-transform: uppercase;
+  }
+  img {
+    width: 480px;
+    position: relative;
+    bottom: 50px;
+    left: 100px;
+  }
+}
+.mydiv8 {
+  h2 {
+    text-align: center;
+    color: red;
+
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  h1 {
+    text-align: center;
+
+    text-transform: capitalize;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  p {
+    text-align: center;
+    max-width: 700px;
+    display: block;
+    margin: 0 auto;
+
+    color: #487397;
+    font-weight: 600;
+    line-height: 26px;
+  }
+}
+
+.mydiv9 {
+  margin-top: 30px;
+  .innerbox {
+    background-color: #f1d0d0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  select {
+    border: none;
+    outline: none;
+    font-size: 18px;
+    font-weight: 600;
+    width: 150px;
+    color: #060644;
+    background: transparent;
+  }
+}
+
+.productname {
+  font-size: 0.8666666667rem;
+  color: #0e3f70;
+  font-weight: 700;
+
+  padding-top: 10px;
+  padding-left: 10px;
+  font-style: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* number of lines to show */
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 20px;
+}
+.price {
+  font-size: 1.2rem;
+  font-weight: 700;
+
+  color: #ff0000;
+  padding-left: 10px;
+  font-style: normal;
+}
+.box1 {
+  border: 1px solid #80808063;
+  padding-bottom: 10px;
+  width: 260px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+.productsimages {
+  margin-top: 30px;
+}
+
+.mydiv10 {
+  margin-top: 36px;
+  h1 {
+    text-transform: uppercase;
+    max-width: 1020px;
+    text-align: center;
+    display: block;
+    margin: 0 auto;
+    font-size: 38px;
+    color: #1c1c90;
+    font-weight: 700;
+    padding-bottom: 10px;
+    padding-top: 40px;
+  }
+
+  p {
+    text-align: center;
+    font-size: 15px;
+
+    font-weight: 600;
+    max-width: 1165px;
+    margin: 0 auto;
+    line-height: 25px;
+    padding-bottom: 42px;
+    padding-top: 12px;
+  }
+
+  button {
+    text-align: center;
+    margin: 0 auto;
+    padding: 12px 15px;
+    border-radius: 32px;
+    background-color: #3da6e4;
+    border-color: #3da6e4;
+    border: none;
+    display: block;
+    font-size: 16px;
+    color: #fff;
+
+    text-transform: uppercase;
+  }
+}
+.trustpilot {
+  img {
+    width: 160px;
+    position: relative;
+    left: 12px;
+    padding-bottom: 17px;
+    padding-top: 16px;
+  }
+}
+.mydiv5 {
+  background-color: #d3d3e3;
+  padding-top: 50px;
+  padding-bottom: 110px;
+  .krishnabox {
+    width: 830px;
+    height: 313px;
+    box-shadow: 3px 1px 4px 1px #80808085;
+    background-color: #fff;
+    .krishnabox2 {
+      text-align: center;
+    }
+  }
+  button {
+    padding: 6px 35px;
+    color: white;
+    background-color: #ff0000;
+    border: none;
+    outline: none;
+    position: relative;
+    top: 42px;
+    bottom: 0;
+    box-shadow: -1px 4px 5px 0px #808080c4;
+    font-size: 16px;
+  }
+  .bedimage::before {
+    content: "";
+    position: absolute;
+    background-color: #eda434;
+    top: -26px;
+    bottom: 0;
+    left: -19px;
+    right: 0;
+    width: 84%;
+    height: 99%;
+    opacity: 0.9;
+  }
+  .bedimage img {
+    height: 350px;
+    width: 470px;
+    position: relative;
+    left: -65px;
+  }
+  h1 {
+    margin-left: 20px;
+    font-size: 60px;
+    color: #66dbff;
+  }
+  p {
+    max-width: 165px;
+    text-align: center;
+    display: block;
+    margin: 0 auto;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  img {
+    width: 295px;
+    margin-top: 14px;
+    margin-bottom: 12px;
+  }
+}

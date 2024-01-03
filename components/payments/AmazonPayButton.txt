@@ -1,0 +1,7 @@
+import { useGetAmazonPaySessionAndSignature } from "network-requests/queries";
+import { useEffect } from "react";
+import useAmazonPay from "services/amazon";
+
+export const AmazonPayButton = () => {
+  return <div id="AmazonPayButton">Pay with amazon</div>;
+};

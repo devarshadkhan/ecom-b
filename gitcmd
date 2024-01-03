@@ -1,0 +1,9 @@
+git add . && git commit -m "changes" && git pull
+git add . && git commit -m "changes" && git pull && git push
+
+FOR PUSH THE CODE ON GITHUB
+
+1 git add . 
+2 git commit -m "message"
+3 git pull 
+4 git push

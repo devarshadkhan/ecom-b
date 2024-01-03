@@ -1,0 +1,33 @@
+.container {
+  padding: 1.8rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  h1,
+  h2,
+  p {
+    margin: 0;
+  }
+  h1 {
+    font-size: calc(1.325rem + 0.9vw);
+    color: #212321;
+  }
+
+  p {
+    color: #474647;
+  }
+}
+
+.background {
+  background: #f5f5f5;
+  h1 {
+    font-size: calc(1.325rem + 0.9vw);
+  }
+  h2 {
+    font-size: calc(1.25rem + 0.9vw);
+    font-weight: 400;
+    color: #292929;
+  }
+}

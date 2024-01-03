@@ -1,0 +1,136 @@
+/* eslint-disable @next/next/no-sync-scripts */
+import React from "react";
+import Head from "next/head";
+
+const config = {
+  region: "uk",
+  sandbox: true,
+  algorithm: "AMZN-PAY-RSASSA-PSS-V2",
+  publicKeyId: "SANDBOX-AF673TYLWUPTSOUKVE7J4YLA",
+};
+
+function App() {
+  const RenderHoja = React.useCallback(() => {
+    console.log(window);
+    if (typeof window !== "undefined") {
+      window?.amazon?.Pay?.renderButton("#AmazonPayButton", {
+        // set checkout environment
+        merchantId: "ANR7FFU470H3X",
+        publicKeyId: config.publicKeyId,
+        ledgerCurrency: "GBP",
+        // customize the buyer experience
+        checkoutLanguage: "en_GB",
+        productType: "PayAndShip",
+        placement: "Cart",
+        buttonColor: "Gold",
+        estimatedOrderAmount: { amount: "109.99", currencyCode: "GBP" },
+        // configure Create Checkout Session request
+        createCheckoutSessionConfig,
+      });
+    }
+  }, []);
+
+  React.useEffect(() => {
+    // console.log(window);
+    window?.amazon?.Pay?.renderButton("#AmazonPayButton", {
+      // set checkout environment
+      merchantId: "ANR7FFU470H3X",
+      publicKeyId: config.publicKeyId,
+      ledgerCurrency: "GBP",
+      // customize the buyer experience
+      checkoutLanguage: "en_GB",
+      productType: "PayAndShip",
+      placement: "Cart",
+      buttonColor: "Gold",
+      estimatedOrderAmount: { amount: "109.99", currencyCode: "GBP" },
+      // configure Create Checkout Session request
+      createCheckoutSessionConfig,
+    });
+  }, []);
+
+  return (
+    <React.Fragment>
+      <Head>
+        <script src="https://static-eu.payments-amazon.com/checkout.js"></script>
+      </Head>
+      <button onClick={RenderHoja}>RenderHoja</button>
+      <div id="AmazonPayButton"></div>
+    </React.Fragment>
+  );
+}
+
+export default App;
+
+const createCheckoutSessionConfig = {
+  signature:
+    "rgniq866F9QPHyQ0+NjPuBHfdndAnz7JY+8fGNAAkkwqAt7p8vwWxCZetUSaoXRefM+SdDi5QHFWaQurlXdE6veZiLLmIgdQ7+bOwpC/GdWF0kKqT/QFhqBKIyrTnpUCPqzRZyTl7yN7n7I0HDnHOEZdus/unhFgI0P+SDcRQ9CmmBaPRE1cADBI3HL/3bA1ZWFWEXGUQyOTumu0pwcHTDW3B6MaU7qa3fgrdDvRYM843+/1tOL4FrJTETq3iRhTEvwC4ys7g2801C+lpA3MYd0XSYN4nBtv9jnQzPCihnTj+Lc6vHn27BWOgXN/rnuUjLnvvQuvMf2K61+rWIw0jA==",
+  payloadJSON: JSON.stringify({
+    checkoutSessionId: "4c0d3444-487e-4eb5-bf8e-8c1129ab0173",
+    webCheckoutDetails: {
+      checkoutReviewReturnUrl: "https://localhost/store/checkoutReview",
+      checkoutResultReturnUrl: "https://localhost/store/checkoutReturn",
+      amazonPayRedirectUrl: null,
+      checkoutCancelUrl: null,
+    },
+    productType: null,
+    paymentDetails: {
+      paymentIntent: null,
+      canHandlePendingAuthorization: false,
+      chargeAmount: null,
+      totalOrderAmount: null,
+      softDescriptor: null,
+      presentmentCurrency: null,
+      allowOvercharge: null,
+      extendExpiration: null,
+    },
+    chargePermissionType: "OneTime",
+    orderType: null,
+    recurringMetadata: null,
+    paymentMethodOnFileMetadata: null,
+    merchantMetadata: {
+      merchantReferenceId: null,
+      merchantStoreName: null,
+      noteToBuyer: null,
+      customInformation: null,
+    },
+    supplementaryData: null,
+    buyer: null,
+    billingAddress: null,
+    paymentPreferences: [null],
+    statusDetails: {
+      state: "Open",
+      reasonCode: null,
+      reasonDescription: null,
+      lastUpdatedTimestamp: "20230607T051039Z",
+    },
+    shippingAddress: null,
+    platformId: null,
+    chargePermissionId: null,
+    chargeId: null,
+    constraints: [
+      {
+        constraintId: "BuyerNotAssociated",
+        description:
+          "There is no buyer associated with the Checkout Session. Return the checkout session id to the Amazon Pay Button to allow buyer to login.",
+      },
+      {
+        constraintId: "ChargeAmountNotSet",
+        description: "chargeAmount is not set.",
+      },
+      {
+        constraintId: "PaymentIntentNotSet",
+        description: "paymentIntent is not set.",
+      },
+    ],
+    creationTimestamp: "20230607T051039Z",
+    expirationTimestamp: "20230608T051039Z",
+    storeId: "amzn1.application-oa2-client.6db7f77b2e60455c976ec265904ca19d",
+    providerMetadata: {
+      providerReferenceId: null,
+    },
+    releaseEnvironment: "Sandbox",
+    checkoutButtonText: null,
+    deliverySpecifications: null,
+    tokens: null,
+  }),
+};

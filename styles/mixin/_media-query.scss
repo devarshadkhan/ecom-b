@@ -1,0 +1,40 @@
+/**************************
+Media Quries Ke Father
+***************************/
+
+@mixin media-query($min: null, $max: null, $rotate: null) {
+  /**************************
+    CHECK FOR MIN WIDTH
+    ***************************/
+  @if $min != null and $max == null and $rotate == null {
+    @media screen and (min-device-width: $min) {
+      @content;
+    }
+  }
+  /**************************
+    CHECK FOR MAX WIDTH
+    ***************************/
+  @if $max != null and $min == null and $rotate == null {
+    @media screen and (max-device-width: $max) {
+      @content;
+    }
+  }
+  /**************************
+    CHECK FOR ORIENTATION
+    ***************************/
+  @if $min != null and $max != null and $rotate == null {
+    @media screen and (min-device-width: $min) and (max-device-width: $max) {
+      @content;
+    }
+  }
+  // // Check For Orientation
+  // @if $rotate == portrait and $min != null and $max != null {
+  //   @media screen and (min-device-width: $min) and (max-device-width: $max) and (orientation: portrait) {
+  //     @content;
+  //   }
+  // } @else if $rotate == landscape and $min != null and $max != null {
+  //   @media screen and (min-device-width: $min) and (max-device-width: $max) and (orientation: landscape) {
+  //     @content;
+  //   }
+  // }
+}

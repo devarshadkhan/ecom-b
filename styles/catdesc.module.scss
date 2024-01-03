@@ -1,0 +1,24 @@
+.desc {
+  margin-top: 50px;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: #3a3a3a;
+    margin-bottom: 1em;
+    font-weight: 600;
+  }
+
+  p {
+    margin-bottom: 1.75em;
+    color: #3a3a3a;
+  }
+
+  ul {
+    position: relative;
+    list-style: disc;
+    margin-left: 17px;
+  }
+}

@@ -1,0 +1,49 @@
+interface CartItemProps {
+  id?: string;
+  quantity: number;
+  total: number;
+  type: string;
+  bed: {
+    _id: string;
+    variantId: string;
+    name: string;
+    image: string;
+    price: number;
+    size: string;
+    categories: string[];
+    slug: string;
+  };
+  accessories: {
+    headboard: {
+      _id: string;
+      name: any;
+      image: string;
+      price: number;
+    };
+    storage: {
+      _id: string;
+      name: any;
+      image: string;
+      price: number;
+    };
+    feet: {
+      _id: string;
+      name: any;
+      image: string;
+      price: number;
+    };
+    mattress: {
+      _id: string;
+      name: any;
+      image: string;
+      price: number;
+    };
+    color: {
+      _id: string;
+      name: any;
+      image: string;
+    };
+  };
+}
+
+export default CartItemProps;

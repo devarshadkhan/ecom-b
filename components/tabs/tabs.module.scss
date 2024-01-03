@@ -1,0 +1,45 @@
+.tabs {
+  width: 100%;
+}
+.productname {
+  font-size: 12px;
+  color: #0e3f70;
+  font-weight: 800;
+
+  padding-top: 10px;
+  padding-left: 10px;
+}
+.price {
+  font-size: 20px;
+  font-weight: 700;
+
+  color: #008849;
+  padding-left: 10px;
+}
+.box1 {
+  border: 1px solid #80808063;
+  padding-bottom: 70px;
+  width: 260px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+.productsimages {
+  margin-top: 30px;
+  padding-bottom: 65px;
+}
+.viewAllProduct {
+  color: #ffffff;
+  background-color: rgb(38, 40, 132);
+  border-radius: 6px;
+  font-size: 15px;
+  padding: 12px 20px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  margin-top: 37px;
+  border: none;
+}
+.viewAllProductTab {
+  margin: 0px auto;
+  width: fit-content;
+  display: block;
+}

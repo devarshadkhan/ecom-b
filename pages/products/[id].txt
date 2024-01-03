@@ -1,0 +1,265 @@
+/* eslint-disable @next/next/no-img-element */
+import React, { useCallback } from 'react';
+import NextSEO from 'layout/nextseo';
+
+import styles from 'styles/product/product.module.scss';
+
+// ARRAY
+// import BedsTabs from './tabs';
+import PerPageLayout from 'layout/perpage';
+import { GetServerSideProps } from 'next';
+import { dehydrate, QueryClient } from 'react-query';
+import { useFetchBedById } from 'network-requests/queries';
+import useAppDispatch from 'store/hooks/usedispatch';
+import { addItemToCart } from 'store/slices/cart';
+import Router, { useRouter } from 'next/router';
+import { event } from 'services/analytics';
+
+/**
+ * NEW PRODUCT PAGE
+ * @returns
+ */
+
+const NewProductPage = ({ size, id }: { size: string; id: string }) => {
+  const router = useRouter();
+  const [tabs, setTabs] = React.useState('BedSize');
+  console.log('data in product page on line 31', id, size);
+  const onTabSelect = React.useCallback((value: string) => {
+    setTabs(value);
+  }, []);
+
+  // const { data, isLoading } = useFetchBedById(id, bedState.bed.size || size); //USE THIS AFTER DISABLING SSR
+  const { data } = useFetchBedById(id, size);
+
+  //LOCAL STATE MANAGEMENT
+  const [state, setState] = React.useState<any>({
+    size: data?.variants?.[0]?.size,
+    total: data?.variants?.[0]?.price.salePrice || 0,
+    color: undefined,
+    storage: undefined,
+    feet: undefined,
+    headboard: undefined,
+    mattress: undefined,
+    quantity: 1,
+  });
+
+  const [currentImage, setCurrentImage] = React.useState(
+    state?.color?.image || data?.variants[0]?.image
+  );
+
+  const updateState = useCallback((key: string, value: any) => {
+    if (
+      key === 'storage' ||
+      key === 'feet' ||
+      key === 'headboard' ||
+      key === 'mattress'
+    ) {
+      //remove previous total
+      setState((prev: any) => ({
+        ...prev,
+        total: Number(prev.total) - Number(prev[key]?.price || 0),
+      }));
+      //add new total
+      setState((prev: any) => ({
+        ...prev,
+        [key]: value,
+        total: Number(prev.total) + Number(value?.price || 0),
+      }));
+    } else {
+      setState((prevState: any) => ({
+        ...prevState,
+        [key]: value,
+      }));
+    }
+  }, []);
+
+  const increaseCount = React.useCallback(() => {
+    updateState('quantity', state.quantity + 1);
+  }, [state, updateState]);
+
+  const decreaseCount = React.useCallback(() => {
+    if (state.quantity > 1) {
+      updateState('quantity', state.quantity - 1);
+    }
+  }, [state, updateState]);
+
+  React.useEffect(() => {
+    setCurrentImage(data?.variants[0]?.image);
+  }, [data]);
+
+  React.useEffect(() => {
+    if (data?.variants?.[0]?.price?.salePrice) {
+      updateState('total', data?.variants?.[0]?.price?.salePrice);
+      setState((prev: any) => ({
+        ...prev,
+        size: data?.variants?.[0]?.size,
+        headboard: undefined,
+        feet: undefined,
+        storage: undefined,
+        mattress: undefined,
+      }));
+    }
+  }, [data, updateState]);
+
+  const sizeHandler = (pathname: string) => {
+    router.push({ pathname: pathname }, undefined, {
+      scroll: false,
+    });
+  };
+
+  console.log('data ', data);
+  // sizeHandler(`/products/${data?.slug}-${data?.value}`);
+  return (
+    <React.Fragment>
+      <div className={styles.imageContainer}>
+        <img src={currentImage} alt="Bed Image" className={styles.image} />
+        <div className={styles.container}>
+          <h3 className={styles.productName}>{data?.name}</h3>
+          <div className={styles.item1}>
+            <div className={styles.left}>
+              {/* {tabsArray.map((data, index) => (
+                <SideTabButton
+                  key={index}
+                  title={data.title}
+                  isactive={data.title === tabs}
+                  onClick={() => onTabSelect(data.title)}
+                />
+              ))} */}
+              <select
+                onChange={(e) => {
+                  sizeHandler(`/products/${data?.slug}-${e.target.value}`);
+                }}
+              >
+                {data?.['availabeSizes']?.map((item, index) => {
+                  return (
+                    <option key={index} value={item.value}>
+                      {item.value}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+            <div className={styles.right}></div>
+          </div>
+          <div className={styles.item2}>
+            <div className={styles.summary}>
+              <div className={styles.priceitemsummary}>
+                <div>
+                  <h5>Total Price</h5>
+                  <span>₤{state.total}</span>
+                </div>
+                <div className={styles.numberaddcard}>
+                  <button
+                    style={{ padding: '4px 9px' }}
+                    onClick={decreaseCount}
+                  >
+                    -
+                  </button>
+                  <div className={styles.input}>
+                    <input
+                      type={'number'}
+                      value={state.quantity}
+                      style={{
+                        width: '50px',
+                        height: '30px',
+                        padding: '0px 10px',
+                        border: '1px solid #bbbbbb',
+                      }}
+                      readOnly={true}
+                    />
+                  </div>
+                  <button
+                    style={{ padding: '4px 9px', marginRight: '15px' }}
+                    onClick={increaseCount}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </React.Fragment>
+  );
+};
+export default NewProductPage;
+
+NewProductPage.getLayout = PerPageLayout;
+
+const tabsArray = [
+  {
+    title: 'BedSize',
+    // icon:'P'
+  },
+  {
+    title: 'Color',
+    // icon:<ColorIcon />
+  },
+  {
+    title: 'HeadBoard',
+    // icon:'P'
+  },
+  {
+    title: 'Storage',
+    // icon:'P'
+  },
+  {
+    title: 'Mattress',
+    // icon:'P'
+  },
+  {
+    title: 'Feet',
+    // icon:'P'
+  },
+];
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { id: query = null }: any = context.query;
+  let size: any = null;
+  let id: any = null;
+
+  console.log({ size });
+  if (query) {
+    const lastWord = query.split('-').pop();
+    if (lastWord && !isNaN(parseInt(lastWord.slice(0, 1)))) {
+      size = lastWord;
+    }
+    id = query.replace(`-${size}`, '');
+  }
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/beds/${id}${
+      size ? `?size=${size}` : ''
+    }`
+  );
+
+  const data = await res.json();
+
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery(['bed', id, size], async () => data);
+
+  // if (res.statusText !== 'OK') {
+  //   return {
+  //     redirect: {
+  //       permanent: false,
+  //       destination: '/',
+  //     },
+  //   };
+  // } else if (data?.variants?.length === 0 || !data) {
+  //   return {
+  //     redirect: {
+  //       permanent: false,
+  //       destination: '/',
+  //     },
+  //   };
+  // }
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+      size,
+      id,
+    },
+  };
+};

@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://bedsdivans.co.uk
+
+# Sitemaps
+Sitemap: https://bedsdivans.co.uk/sitemap.xml

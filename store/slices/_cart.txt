@@ -1,0 +1,174 @@
+import { nanoid } from "nanoid";
+import { StateCreator } from "zustand";
+
+interface CartItemProps {
+  id?: string;
+  quantity: number;
+  total: number;
+  type: string;
+  bed: {
+    _id: string;
+    variantId: string;
+    name: string;
+    image: string;
+    price: number;
+    size: string;
+    categories: string[];
+    slug: string;
+  };
+  accessories: {
+    headboard: {
+      _id: string;
+      name: any;
+      image: string;
+      price: number;
+    };
+    storage: {
+      _id: string;
+      name: any;
+      image: string;
+      price: number;
+    };
+    feet: {
+      _id: string;
+      name: any;
+      image: string;
+      price: number;
+    };
+    mattress: {
+      _id: string;
+      name: any;
+      image: string;
+      price: number;
+    };
+    color: {
+      _id: string;
+      name: any;
+      image: string;
+    };
+  };
+}
+
+type CartSlice = {
+  cart: any;
+};
+
+export const createCartSlice: StateCreator<CartSlice> = (set, get) => ({
+  cart: {
+    items: [],
+    totalPrice: 0,
+    coupon: null,
+    extraDelivery: {
+      amount: 0,
+      name: `Free Kerb side delivery to the door (Flat or apartments Ground floor
+        communal area only)`,
+    },
+  },
+
+  setExtraDelivery(action) {
+    state.extraDelivery = action.payload;
+  },
+  setCoupon(state, action) {
+    state.coupon = action.payload;
+  },
+  addItem(state, action: PayloadAction<CartItemProps>) {
+    const item = action.payload;
+    //  found item with same accessories
+    const foundItem = checkForSameAccessoryAndGetData(
+      state.items,
+      item.accessories
+    );
+
+    const accessories = item.accessories;
+    const sameAccessory = checkForSameAccessory(state.items, accessories);
+
+    console.log({ sameAccessory });
+
+    if (foundItem) {
+      if (sameAccessory && item.bed.size === foundItem.bed.size) {
+        foundItem.quantity++;
+        state.totalPrice += foundItem.total;
+      } else {
+        state.items.push(item);
+        state.totalPrice += item.total;
+      }
+    } else {
+      state.items.push({ ...item, id: nanoid() });
+      state.totalPrice += item.total * item.quantity;
+    }
+  },
+
+  removeItem(action) {
+    const id = action.payload;
+    const foundItem = state.items.find((item) => item.id === id);
+
+    if (foundItem) {
+      state.totalPrice -= foundItem.total * foundItem.quantity;
+      state.items = state.items.filter((item) => item.id !== id);
+    }
+  },
+});
+
+/**
+ *   addToCart: (product) => {
+    const cart = get().cart;
+    const findProduct = cart.find((p) => p.id === product.id);
+    if (findProduct) {
+      findProduct.quantity! += 1;
+    } else {
+      cart.push({ ...product, quantity: 1 });
+    }
+    set({ cart });
+  },
+  removeFromCart: (productId: number) => {
+    set({ cart: get().cart.filter((product) => product.id !== productId) });
+  },
+  updateQuantity: (productId: number, action: "increase" | "decrease") => {
+    const cart = get().cart;
+    const findProduct = cart.find((p) => p.id === productId);
+    if (findProduct) {
+      if (action === "decrease") {
+        findProduct.quantity =
+          findProduct.quantity! > 1
+            ? findProduct.quantity! - 1
+            : findProduct.quantity!;
+      } else {
+        findProduct.quantity! += 1;
+      }
+    }
+    set({ cart });
+  },
+  showCart: false,
+  toggleCart: () => {
+    set({ showCart: !get().showCart });
+  },
+ */
+
+const checkForSameAccessory = (items: CartItemProps[], accessories: any) => {
+  const findItem = items.find(
+    (cartItem) =>
+      cartItem?.accessories?.color?._id === accessories?.color?._id &&
+      cartItem?.accessories?.headboard?._id === accessories?.headboard?._id &&
+      cartItem?.accessories?.storage?._id === accessories?.storage?._id &&
+      cartItem?.accessories?.feet?._id === accessories?.feet?._id &&
+      cartItem?.accessories?.mattress?._id === accessories?.mattress?._id &&
+      cartItem?.accessories?.color?._id === accessories?.color?._id
+  );
+  return !!findItem;
+};
+
+const checkForSameAccessoryAndGetData = (
+  items: CartItemProps[],
+  accessories: any
+) => {
+  const findItem = items.find(
+    (cartItem) =>
+      cartItem?.accessories?.color?._id === accessories?.color?._id &&
+      cartItem?.accessories?.headboard?._id === accessories?.headboard?._id &&
+      cartItem?.accessories?.storage?._id === accessories?.storage?._id &&
+      cartItem?.accessories?.feet?._id === accessories?.feet?._id &&
+      cartItem?.accessories?.mattress?._id === accessories?.mattress?._id &&
+      cartItem?.accessories?.color?._id === accessories?.color?._id
+  );
+  return findItem;
+};

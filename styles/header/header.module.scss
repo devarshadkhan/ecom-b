@@ -1,0 +1,35 @@
+.mainHeader {
+  background-image: url(/assets/images/Path5.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 83%;
+  margin-right: 0px !important;
+  margin: 0px auto;
+  display: flex;
+  padding: 7px 15px;
+}
+.mainHeader p {
+  color: #fff;
+  padding: 0 16px;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+  font-size: 15px;
+  white-space: nowrap;
+  margin: 0px;
+}
+// .cnt_us {
+//   float: right;
+// }
+.header_logo {
+  margin-top: -22px;
+  margin-bottom: 3px;
+  cursor: pointer;
+  position: relative;
+  top: 11px;
+  width: 100px;
+  height: 92px;
+}
+
+.sectionfirst {
+  background-color: #000;
+}

@@ -1,0 +1,796 @@
+// import ApplyCoupon from "components/coupon";
+// import Model from "components/model";
+import Button from "components/buttons/Button";
+import TitleHeader from "components/title-header";
+import { useFormik } from "formik";
+import CoupanIcon from "icons/coupan";
+import PerPageLayout from "layout/perpage";
+import { useCreateOrder } from "network-requests/mutations";
+// import { useGetAllCoupons } from "network-requests/queries";
+import { Coupon } from "network-requests/types";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import React, { useCallback } from "react";
+import useAppDispatch from "store/hooks/usedispatch";
+import useAppSelector from "store/hooks/useselector";
+import { removeItemFromCart, setExtraDelivery } from "store/slices/cart";
+import css from "styles/cart.module.scss";
+import { NextPageWithLayout } from "typings/layout";
+import ContactForm from "./form";
+import * as Yup from "yup";
+import Model from "components/model";
+import ApplyCoupon from "components/coupon";
+import { useGetAllCoupons } from "network-requests/queries";
+import { KlarnaCheckoutComponent } from "components/payments/klarna-checkout-component";
+import KlarnaIcon from "icons/klarna-icon";
+import AmazonPayCheckoutButton from "components/payments/amazon-checkout-component";
+import ReCAPTCHA from "react-google-recaptcha";
+import axios from "network-requests/axios";
+
+const Checkout: NextPageWithLayout = () => {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const [isValidForm, setValidForm] = React.useState(false);
+  // Coupon Model
+
+  const [couponModel, setCouponModel] = React.useState(false);
+  // const [extraDeliveryState, setExtraDeliveryState] = React.useState(0);
+  const [coupon, setCoupon] = React.useState<Partial<Coupon>>();
+  const [paymentMethod, setPaymentMethod] = React.useState<string>("stripe");
+
+  const { items: cartItems, ...cartState } = useAppSelector(
+    (state) => state.cart
+  );
+  const { data } = useGetAllCoupons();
+
+  const { mutate, isLoading } = useCreateOrder();
+
+  const formik = useFormik({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      country: "",
+      companyName: "",
+      houseNumber: "",
+      townCity: "",
+      postcode: "",
+      phone: "",
+      email: "",
+      orderNotes: "",
+      checkbox: false,
+    },
+    onSubmit: (values) => {
+      // console.log("running");
+      const orderPayload = createPayload(values);
+      createCheckOutSession(orderPayload);
+    },
+    validationSchema: Yup.object({
+      firstName: Yup.string().required("Required"),
+      lastName: Yup.string().required("Required"),
+      // country: Yup.string().required("Required"),
+      // companyName: Yup.string().required("Required"),
+      houseNumber: Yup.string().required("Required"),
+      townCity: Yup.string().required("Required"),
+      postcode: Yup.string().required("Required"),
+      phone: Yup.string().required("Required"),
+      email: Yup.string().required("Required"),
+      checkbox: Yup.boolean().oneOf([true], "Required"),
+    }),
+  });
+
+  // console.log(formik.errors);
+
+  // const [formData, setFormData] = React.useState({
+  //   firstName: "",
+  //   lastName: "",
+  //   country: "",
+  //   companyName: "",
+  //   houseNumber: "",
+  //   townCity: "",
+  //   postcode: "",
+  //   phone: "",
+  //   email: "",
+  //   orderNotes: "",
+  //   checkbox: false,
+  // });
+
+  const createPayload = useCallback(
+    (formData: any) => {
+      const orderItems = cartItems.map((item: any) => {
+        return {
+          _id: item?.bed?.variantId,
+          bedId: item?.bed?._id,
+          color: item?.accessories?.color?._id,
+          headboard: item?.accessories?.headboard?._id,
+          mattress: item?.accessories?.mattress?._id,
+          feet: item?.accessories?.feet?._id,
+          storage: item?.accessories?.storage?._id,
+          quantity: item?.quantity,
+        };
+      });
+
+      return {
+        user: {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          phone: formData.phone,
+        },
+        couponId: coupon?._id,
+        orderItems: orderItems,
+        shippingAddress: {
+          address: formData.houseNumber + "," + formData.houseAddress,
+          townCity: formData.townCity,
+          postalCode: formData.postcode,
+          country: formData.country,
+          companyName: formData.companyName,
+        },
+        billingAddress: {
+          address: formData.houseNumber + "," + formData.houseAddress,
+          townCity: formData.townCity,
+          postalCode: formData.postcode,
+          country: formData.country,
+          companyName: formData.companyName,
+        },
+        orderNotes: formData.orderNotes,
+        payment: {
+          paymentMethod: paymentMethod,
+        },
+        extraDelivery: {
+          amount: cartState.extraDelivery?.amount,
+        },
+      };
+    },
+    [cartItems, coupon?._id, paymentMethod, cartState.extraDelivery?.amount]
+  );
+
+  const handleDeleteItem = (id: string) => {
+    dispatch(removeItemFromCart(id));
+  };
+
+  React.useEffect(() => {
+    // if (
+    //   formData.country &&
+    //   formData.houseNumber &&
+    //   formData.townCity &&
+    //   formData.postcode &&
+    //   formData.phone &&
+    //   formData.checkbox
+    // ) {
+    // }
+    setValidForm(formik.isValid);
+  }, [formik.isValid]);
+
+  console.log({ valid: formik.isValid });
+
+  const createCheckOutSession = React.useCallback(
+    (orderPayload: any) => {
+      // console.log("running createCheckOutSession");
+      // console.log({ orderPayload });
+      mutate(orderPayload as any, {
+        onSuccess: async (data) => {
+          console.log({ data });
+          if (paymentMethod === "stripe") {
+            if (data) {
+              router.push(data?.stripe?.url);
+            }
+          } else if (paymentMethod === "clearpay") {
+            if (data) {
+              router.push(data?.session?.data?.redirectCheckoutUrl);
+            }
+          } else {
+            // console.log({ data });
+            router.push(
+              `/order/success?paymentMethod=Cash%20On%20Delivery&price=${data.order.totalPrice}&orderId=${data?.order?.orderId}&createdAt=${data?.order?.createdAt}`
+            );
+          }
+
+          //test case first
+
+          // window.gtag("event", "purchases", {
+          //   transaction_id: "T_12345_1",
+          //   value: 25.42,
+          //   tax: 4.9,
+          //   shipping: 5.99,
+          //   currency: "GBP",
+          //   coupon: "SUMMER_SALE",
+          //   items: [
+          //     // If someone purchases more than one item,
+          //     // you can add those items to the items array
+          //     {
+          //       item_id: "SKU_12345",
+          //       item_name: "bedsdivans",
+          //       affiliation: "Google Merchandise Store",
+          //       coupon: "SUMMER_FUN",
+          //       discount: 2.22,
+          //       index: 0,
+          //       item_brand: "Google",
+          //       item_category: "Apparel",
+          //       item_category2: "Adult",
+          //       item_category3: "Shirts",
+          //       item_category4: "Crew",
+          //       item_category5: "Short sleeve",
+          //       item_list_id: "related_products",
+          //       item_list_name: "Related Products",
+          //       item_variant: "green",
+          //       location_id: "ChIJIQBpAG2ahYAR_6128GcTUEo",
+          //       price: 12.99,
+          //       quantity: 1,
+          //     },
+          //   ],
+          // });
+
+          //test case second
+
+          window.gtag("event", "purchase", {
+            transaction_id: data?.order?._id,
+            value: Number(data?.order?.totalPrice).toFixed(2),
+            tax: 4.9,
+            shipping: 5.99,
+            coupon: "EXTRA_TEN",
+            currency: "GBP",
+            items: data?.order?.orderItems?.map((item: any, index: number) => {
+              return {
+                item_id: item?._id,
+                item_name: item?.name,
+                affiliation: "Google Merchandise Store",
+                coupon: "EXTRA_TEN",
+                discount: 10.22,
+                index: index,
+                item_brand: "BedsDivans",
+                item_category: item?.categories?.[0],
+                item_category2: item?.categories?.[1],
+                item_category3: item?.categories?.[2],
+                item_category4: item?.categories?.[3],
+                item_category5: item?.categories?.[4],
+                item_list_id: "related_products",
+                item_list_name: "Related Products",
+                item_variant: "green",
+                location_id: "ChIJIQBpAG2ahYAR_6128GcTUEo",
+                price: Number(item?.price).toFixed(2),
+                quantity: item?.quantity,
+              };
+            }),
+            // If someone purchases more than one item,
+            // you can add those items to the items array
+          });
+          // event({
+          //   action: "proceed_to_checkout",
+          //   params: {
+          //     name: cartItems.map(
+          //       (item: { bed: { name: any } }) => item.bed.name
+          //     ),
+          //     price: totalPrice,
+          //     "payment-method": paymentMethod,
+          //     value: 21.09,
+          //     currency: "GBP",
+          //     items: [
+          //       {
+          //         item_id: data?._id as string,
+          //       },
+          //     ],
+          //   },
+          // });
+          //for GA4
+        },
+
+        onError: (error: any) => {
+          if (
+            error.response.data.error === "FetchError: Unprocessable Entity"
+          ) {
+            alert("Clearpay is not available for this order");
+          }
+        },
+      });
+    },
+    [mutate, router, paymentMethod]
+  );
+
+  const haveSomethingInCart = cartItems.length > 0;
+
+  const totalArray = cartItems.map(
+    (item: { quantity: number; total: number }) => item.quantity * item.total
+  );
+  const cartTotal: number = totalArray.reduce(
+    (i: number, a: number) => i + a,
+    0
+  );
+
+  console.log(cartState.extraDelivery);
+
+  // GOOGLE CAPTCHA
+
+  return (
+    <React.Fragment>
+      <Model
+        name="Apply coupon"
+        show={couponModel}
+        onClose={() => setCouponModel(false)}
+      >
+        <ApplyCoupon
+          cartTotal={cartTotal as number}
+          onApply={(coupon) => {
+            setCoupon(coupon as any);
+            setCouponModel(false);
+          }}
+          couponList={data as Coupon[]}
+        />
+      </Model>
+      <TitleHeader title="Checkout" />
+      <form className={css.item} onSubmit={formik.handleSubmit}>
+        {/* GOOGLE CAPTCHA */}
+        <div className="container">
+          <div className={css.row}>
+            {/* FORM */}
+            <ContactForm
+              // onChange={(value) => setFormData(value)}
+              formik={formik}
+            />
+
+            <div className={css.button}>
+              {haveSomethingInCart ? (
+                <div className={css["summary"]}>
+                  <p className={css["bag-item"]}>
+                    My Bag have{" "}
+                    <strong className={css.colorchange}>
+                      {" "}
+                      {cartItems?.length}
+                    </strong>{" "}
+                    item (s)
+                  </p>
+                  {cartItems.map((data: any, index: any) => {
+                    // console.log(data);
+                    return (
+                      <BagItemsSummary
+                        onRemove={() => handleDeleteItem(data.id as string)}
+                        totalPrice={data.total}
+                        {...data}
+                        key={index}
+                      />
+                    );
+                  })}
+
+                  <div className={css["extra-dilivery"]}>
+                    <div className={css["extra-container"]}>
+                      <p>Delivery Option</p>
+                      {[
+                        {
+                          value: 0,
+                          _html: (
+                            <label htmlFor={"0"}>
+                              Free Kerb side delivery to the door (Flat or
+                              apartments Ground floor communal area only)
+                            </label>
+                          ),
+                        },
+                        {
+                          value: 50,
+                          _html: (
+                            <label htmlFor={"50"}>
+                              Room service - (Choice of room -{" "}
+                              <strong> £50 </strong>)
+                            </label>
+                          ),
+                        },
+                      ].map(({ _html, value }, index) => {
+                        return (
+                          <div
+                            key={index}
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              alignItems: "center",
+                              marginBottom: "10px",
+                              gap: "10px",
+                            }}
+                          >
+                            <input
+                              id={`${index}`}
+                              type="radio"
+                              checked={
+                                value === cartState.extraDelivery?.amount
+                              }
+                              onChange={() =>
+                                dispatch(setExtraDelivery({ amount: value }))
+                              }
+                              style={{
+                                accentColor: "#1d3343",
+                                height: "1rem",
+                                width: "1rem",
+                              }}
+                            />
+                            {_html}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className={css["coupan-container"]}>
+                    <div className={css["coupan-text"]}>
+                      <CoupanIcon />
+                      Have a coupon?
+                      <strong onClick={() => setCouponModel(true)}>
+                        Click here to enter your code
+                      </strong>
+                    </div>
+                  </div>
+
+                  <TotalSummary
+                    formik={formik}
+                    isDisable={!isValidForm}
+                    defaultPaymentType={paymentMethod}
+                    getPaymentType={(value) => setPaymentMethod(value) as any}
+                    isLoading={isLoading}
+                    coupon={coupon}
+                    orderPayload={{
+                      values: formik.values,
+                      cartItems,
+                      paymentMethod,
+                      coupon,
+                    }}
+                  />
+                </div>
+              ) : (
+                <div className={css.item2}>
+                  <p>Your Cart is Empty</p>
+                  <div className={css.shopping_page}>
+                    <Link href={"/"}>Continue Shopping</Link>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </form>
+      {/* CONTACT END */}
+      {/* <Recommendation /> */}
+    </React.Fragment>
+  );
+};
+export default Checkout;
+
+Checkout.getLayout = PerPageLayout;
+
+interface TotalSummaryProps {
+  isDisable?: boolean;
+  defaultPaymentType: string;
+  getPaymentType?: (value: string) => string;
+  isLoading?: boolean;
+  coupon?: Partial<Coupon>;
+  orderPayload?: any;
+  formik: any;
+}
+
+const TotalSummary = ({
+  defaultPaymentType,
+  getPaymentType,
+  isDisable,
+  isLoading,
+  coupon,
+  orderPayload,
+  formik,
+}: TotalSummaryProps) => {
+  const { totalPrice, extraDelivery } = useAppSelector((state) => state.cart);
+  const couponDiscount = coupon?.percent || 0;
+
+  const percent = getPercentage(Number(totalPrice?.toFixed(2)), couponDiscount);
+
+  const totalPriceAfterDiscount = totalPrice - percent + extraDelivery?.amount;
+  // console.log({ totalPriceAfterDiscount });
+
+  const [paymentType, setPaymentType] = React.useState(defaultPaymentType);
+
+  const paymentTypeArray = [
+    {
+      title: "Credit card/Debit card",
+      type: "stripe",
+      description: "Secure payment via Stripe Checkout.",
+    },
+    {
+      title: "Cash on delivery",
+      type: "cash-on-delivery",
+      description: "Pay with cash upon delivery.",
+    },
+    // {
+    //   title: "ClearPay",
+    //   type: "clearpay",
+    //   description: "Pay with ClearPay.",
+    // },
+    {
+      title: "Klarna Pay in 30 Days",
+      type: "klarna",
+      description: "",
+    },
+    // {
+    //   title: "Pay with Amazon Pay",
+    //   type: "amazon-pay",
+    //   description: "",
+    // },
+  ];
+
+  // console.log({ paymentType });
+
+  React.useEffect(() => {
+    if (getPaymentType) {
+      getPaymentType(paymentType);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paymentType]);
+  // Based on Type You Can Change
+
+  const [isChecked, setIsChecked] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState("");
+
+  // const handleCheckboxChange = (event) => {
+  //   setIsChecked(event.target.checked);
+  // };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (!isChecked) {
+      setErrorMessage("Please check the box.");
+    } else {
+      setErrorMessage("");
+      // handle form submission
+    }
+  };
+
+  const recaptchaRef = React.useRef(null);
+
+  const onReCAPTCHAChange = async (token: string) => {
+    // If the reCAPTCHA code is null or undefined indicating that
+    // the reCAPTCHA was expired then return early
+    if (!token) {
+      return;
+    }
+
+    const { data } = await axios({
+      method: "post",
+      url: "/google-recaptcha-varify",
+      data: { token },
+    });
+
+    console.log(`Hey, ${token}`);
+    console.log(data);
+    // Else reCAPTCHA was executed successfully so proceed with the
+    // alert
+    // Reset the reCAPTCHA so that it can be executed again if user
+    // submits another email.
+    // recaptchaRef.current.reset();
+  };
+
+  return (
+    <div className={css.checkform}>
+      <div className={css.items}>
+        <p>Price Summary </p>
+        <div className={css.price}>
+          <p>Sub Total (Incl.of taxes) </p>
+          <p>£{totalPrice?.toFixed(2)}</p>
+        </div>
+        <div className={css.price}>
+          <p>Shipping</p>
+          <p>FREE</p>
+        </div>
+        {extraDelivery?.amount > 0 && (
+          <div className={css.price}>
+            <p>Room service (Choice of room)</p>
+            <p>£{extraDelivery?.amount.toFixed(2)}</p>
+          </div>
+        )}
+        {couponDiscount ? (
+          <div className={css.price}>
+            <p>Coupon Apllied</p>
+            <p>
+              -£{percent} ({coupon?.percent}%)
+            </p>
+          </div>
+        ) : null}
+        <div className={css.price}>
+          <p>Total</p>
+          <p>£{totalPriceAfterDiscount.toFixed(2)}</p>
+        </div>
+        <div className={css.payment}>
+          {paymentTypeArray.map((data, index) => (
+            <React.Fragment key={index}>
+              <div
+                className={css["radio-box"]}
+                onClick={() => setPaymentType(data.type)}
+              >
+                <input
+                  type="radio"
+                  id={data.type}
+                  name={data.type}
+                  checked={paymentType === data.type}
+                />
+                <label htmlFor={data.type}>
+                  {data.title}
+                  {data.type === "klarna" ? <KlarnaIcon height={20} /> : null}
+                </label>
+              </div>
+              {data.description && (
+                <div
+                  className={css["description"]}
+                  style={{
+                    maxHeight: paymentType === data.type ? "50px" : "0px",
+                  }}
+                >
+                  <p>{data.description}</p>
+                </div>
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+        <div>
+          {paymentType === "klarna" && (
+            <KlarnaCheckoutComponent orderPayload={orderPayload} />
+          )}
+          {paymentType === "amazon-pay" && (
+            <AmazonPayCheckoutButton orderPayload={orderPayload} />
+          )}
+          <form onSubmit={handleSubmit}>
+            <div className={css["checkbox"]}>
+              <input
+                name="checkbox"
+                type="checkbox"
+                checked={formik.values.checkbox}
+                onChange={formik.handleChange}
+              />
+              <label>
+                I have read and agree to the terms and conditions & Delivery
+                Policy Below: You will receive a call to book in your delivery
+                slot. *
+              </label>
+              {errorMessage && (
+                <div style={{ color: "red" }}>{errorMessage}</div>
+              )}
+            </div>
+          </form>
+          <br />
+          <ReCAPTCHA
+            ref={recaptchaRef}
+            size="normal"
+            sitekey={process.env.NEXT_PUBLIC_GOOGLE_SITE_KEY as string}
+            onChange={onReCAPTCHAChange}
+          />
+          {paymentType !== "klarna" && (
+            <PaymentButton
+              title={isDisable ? "Full Fill the Form" : ""}
+              disable={isDisable}
+              paymentType={paymentType}
+              isLoading={isLoading}
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+interface PaymentButtonProps extends React.ComponentPropsWithoutRef<"button"> {
+  disable?: boolean;
+  paymentType: string;
+
+  isLoading?: boolean;
+}
+
+const PaymentButton = ({
+  paymentType,
+  disable,
+  isLoading,
+  ...rest
+}: PaymentButtonProps) => {
+  switch (paymentType) {
+    case "stripe":
+      return (
+        <Button
+          type="submit"
+          disabled={disable}
+          className={`${css.checkpro} ${disable ? css.disable : ""}`}
+          // onClick={onStripeCheckout}
+          loading={isLoading}
+          {...rest}
+        >
+          Pay via Checkout
+        </Button>
+      );
+    case "cash-on-delivery":
+      return (
+        <Button
+          type="submit"
+          disabled={disable}
+          className={`${css.checkpro} ${disable ? css.disable : ""}`}
+          // onClick={onCashOnDelivery}
+          {...rest}
+        >
+          Place Order
+        </Button>
+      );
+    case "clearpay":
+      return (
+        <Button
+          type="submit"
+          disabled={disable}
+          className={`${css.checkpro} ${disable ? css.disable : ""}`}
+          // onClick={onCashOnDelivery}
+          {...rest}
+        >
+          Pay via ClearPay
+        </Button>
+      );
+
+    default:
+      return null;
+  }
+};
+
+interface ItemsSummaryProps {
+  bed: any;
+  accessories: any;
+  onRemove: () => void;
+  totalPrice: number;
+}
+
+const BagItemsSummary = ({
+  accessories,
+  bed,
+  onRemove,
+  totalPrice,
+}: ItemsSummaryProps) => {
+  return (
+    <React.Fragment>
+      <div className={css["summary-container"]}>
+        <div className={css["summary-items"]}>
+          <h4 className={css["product-name"]}>{bed?.name}</h4>
+          <ul>
+            <li>
+              <span>Bed Size </span>
+              <span>:</span>
+              <span>{bed?.size}</span>
+            </li>
+            {accessories?.color.name?.length > 0 && (
+              <li>
+                <strong>Selected Color :</strong>
+                {accessories?.color.name}
+              </li>
+            )}
+
+            <li>
+              <strong>Selected Headboard :</strong>
+              {accessories?.headboard?.name || "No Headboard"}
+            </li>
+
+            <li>
+              <strong>Selected Storage:</strong>
+              {accessories?.storage?.name || "No Storage"}
+            </li>
+
+            <li>
+              <strong>Select Feet : </strong>
+              {accessories?.feet?.name || "Free Castor Wheels"}
+            </li>
+
+            <li>
+              <strong>Selected Mattress : </strong>
+              {accessories?.mattress?.name || "No Mattress"}
+            </li>
+          </ul>
+        </div>
+        <div className={css["price-summary"]}>
+          <h5>
+            <span> Price</span> <span>£{totalPrice}</span>
+          </h5>
+        </div>
+        {/* <div className={css.CartItems_buttons}>
+          <button onClick={onRemove} className={css.removebutton}>
+            Remove
+          </button>
+        </div> */}
+      </div>
+    </React.Fragment>
+  );
+};
+
+const getPercentage = (total: number, discountPct: number) => {
+  return (total * discountPct) / 100;
+};

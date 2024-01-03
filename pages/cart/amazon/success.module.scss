@@ -1,0 +1,69 @@
+$green: #4caf50;
+$orange: #f77f00;
+
+.container {
+  display: grid;
+  place-content: center;
+  height: 100vh;
+  h1 {
+    font-weight: 600;
+    font-size: 40px;
+    margin-bottom: 10px;
+    text-align: center;
+    &.error {
+      color: $orange;
+    }
+    &.success {
+      color: $green;
+    }
+  }
+  p {
+    color: #404f5e;
+    font-size: 20px;
+    margin: 0;
+    text-align: center;
+  }
+}
+
+.checkmark {
+  border-radius: 200px;
+  height: 200px;
+  width: 200px;
+  background: #f8faf5;
+  margin: 0 auto;
+
+  display: grid;
+  place-content: center;
+  i {
+    font-size: 100px;
+    &.error {
+      color: $orange;
+    }
+    &.success {
+      color: $green;
+    }
+  }
+}
+
+.card {
+  padding: 60px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  display: inline-block;
+  margin: 0 auto;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  button {
+    margin: 0 10px;
+    padding: 1rem;
+    border-radius: 4px;
+    background-color: $orange;
+    color: white;
+    font-weight: bold;
+  }
+}

@@ -1,0 +1,31 @@
+.klarnaBtn{
+    background-color: #454b54;
+    border:none;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px;
+    text-transform: uppercase;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.klarnaBtn svg{
+    margin-right: 10px;
+}
+
+.authorizeBtn{
+    background-color: #fff;
+    border: 1px solid #454b54;
+    color: #454b54;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}

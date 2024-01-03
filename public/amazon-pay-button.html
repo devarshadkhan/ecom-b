@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="AmazonPayButton"></div>
+    <script src="https://static-eu.payments-amazon.com/checkout.js"></script>
+    <script type="text/javascript" charset="utf-8">
+      const createCheckoutSessionConfig = {
+        signature:
+          "BX1olN6/yaL31U127VoggedF6MPiNVebhxtScUuH4aNSZ3J8ipaindgARcoa92aQwBOzwTDMnSuJ7NioSwdx+G0+i3INOYsncd4cut+yrXHpowXl0K5It9gAohu4uDKY/nYciALG33lm41TcWNCn1kfmQP3QuLJKcXtW1GWXtdVSE8N/j4neRWrMaMfiDMtaa+sICuntF1Qv1OIte2McI92DEdoKyKMpFiXrjyv8ObwRw75bwdlSFvLehJipddeLKn9I1805nkEMxCVvE5qG3pHgYmqYYmCyDyoI/kbxZ1PNQDjzIaeLcG0XqrEXM/N+y+XKEdgAP/gTNi9xMnxR5A==",
+        payloadJSON: {
+          checkoutSessionId: "f2927a2a-d2bd-4dcb-893c-fea202d0b823",
+          webCheckoutDetails: {
+            checkoutReviewReturnUrl: "https://localhost/store/checkoutReview",
+            checkoutResultReturnUrl: "https://localhost/store/checkoutReturn",
+            amazonPayRedirectUrl: null,
+            checkoutCancelUrl: null,
+          },
+          productType: null,
+          paymentDetails: {
+            paymentIntent: null,
+            canHandlePendingAuthorization: false,
+            chargeAmount: null,
+            totalOrderAmount: null,
+            softDescriptor: null,
+            presentmentCurrency: null,
+            allowOvercharge: null,
+            extendExpiration: null,
+          },
+          chargePermissionType: "OneTime",
+          orderType: null,
+          recurringMetadata: null,
+          paymentMethodOnFileMetadata: null,
+          merchantMetadata: {
+            merchantReferenceId: null,
+            merchantStoreName: null,
+            noteToBuyer: null,
+            customInformation: null,
+          },
+          supplementaryData: null,
+          buyer: null,
+          billingAddress: null,
+          paymentPreferences: [null],
+          statusDetails: {
+            state: "Open",
+            reasonCode: null,
+            reasonDescription: null,
+            lastUpdatedTimestamp: "20230531T061413Z",
+          },
+          shippingAddress: null,
+          platformId: null,
+          chargePermissionId: null,
+          chargeId: null,
+          constraints: [
+            {
+              constraintId: "BuyerNotAssociated",
+              description:
+                "There is no buyer associated with the Checkout Session. Return the checkout session id to the Amazon Pay Button to allow buyer to login.",
+            },
+            {
+              constraintId: "ChargeAmountNotSet",
+              description: "chargeAmount is not set.",
+            },
+            {
+              constraintId: "PaymentIntentNotSet",
+              description: "paymentIntent is not set.",
+            },
+          ],
+          creationTimestamp: "20230531T061413Z",
+          expirationTimestamp: "20230601T061413Z",
+          storeId:
+            "amzn1.application-oa2-client.6db7f77b2e60455c976ec265904ca19d",
+          providerMetadata: {
+            providerReferenceId: null,
+          },
+          releaseEnvironment: "Sandbox",
+          checkoutButtonText: null,
+          deliverySpecifications: null,
+          tokens: null,
+        },
+      };
+      amazon.Pay.renderButton("#AmazonPayButton", {
+        // set checkout environment
+        merchantId:
+          "amzn1.oa2-cs.v1.b1d303099d79a88edd26fd7ccb1dbaab387d98c398dbad7e8ab510ae5d207e74",
+        publicKeyId: "SANDBOX-AF673TYLWUPTSOUKVE7J4YLA",
+        ledgerCurrency: "GBP",
+        // customize the buyer experience
+        checkoutLanguage: "en_GB",
+        productType: "PayAndShip",
+        placement: "Checkout",
+        buttonColor: "Gold",
+        // configure Create Checkout Session request
+        createCheckoutSessionConfig,
+      });
+    </script>
+  </body>
+</html>

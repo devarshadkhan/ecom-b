@@ -1,0 +1,27 @@
+import { useGetUpdateAmazonPay } from "network-requests/mutations";
+import { useRouter } from "next/router";
+import React, { useEffect } from "react";
+
+function Pending() {
+  const router = useRouter();
+  const { mutate } = useGetUpdateAmazonPay();
+
+  useEffect(() => {
+    if (!router.query.amazonCheckoutSessionId) return;
+    mutate(
+      {
+        checkoutSessionId: router.query.amazonCheckoutSessionId,
+        chargeAmount: 100,
+      },
+      {
+        onSuccess: (data) => {
+          router.push(data.webCheckoutDetails.amazonPayRedirectUrl);
+        },
+      }
+    );
+  }, [router.query.amazonCheckoutSessionId]);
+
+  return <div></div>;
+}
+
+export default Pending;

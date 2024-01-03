@@ -1,0 +1,27 @@
+.heading {
+  font-size: 16px;
+  padding-left: 20px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+.sidecategory {
+  position: relative;
+  right: 80px;
+}
+.ul-padd {
+  li {
+    padding-left: 30px !important;
+    a {
+      font-size: 16px;
+      margin-bottom: -5px;
+      font-weight: 500;
+    }
+  }
+}
+
+
+@media (max-width:720px) {
+  .sidecategory { 
+    display: none;
+  }
+}

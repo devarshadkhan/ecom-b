@@ -1,0 +1,27 @@
+import { useGetConfirmAmazonPay } from "network-requests/mutations";
+import { useRouter } from "next/router";
+import React, { useEffect } from "react";
+
+function Confirm() {
+  const router = useRouter();
+  const { mutate } = useGetConfirmAmazonPay();
+
+  useEffect(() => {
+    if (!router.query.amazonCheckoutSessionId) return;
+    mutate(
+      {
+        checkoutSessionId: router.query.amazonCheckoutSessionId,
+        chargeAmount: 100,
+      },
+      {
+        onSuccess: (data) => {
+          console.log({ data });
+          router.push("/order/success");
+        },
+      }
+    );
+  }, [router.query.amazonCheckoutSessionId]);
+  return <div></div>;
+}
+
+export default Confirm;

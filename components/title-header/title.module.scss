@@ -1,0 +1,29 @@
+// Hello World
+
+.container {
+  display: grid;
+  font-size: 20px;
+  place-content: center;
+  background: #0a0a0a;
+  padding: 5em 0 5em;
+  h1 {
+    color: #fff;
+    font-size: 3rem;
+    font-weight: 500;
+    font-family: -apple-system,blinkmacsystemfont,segoe ui,roboto,oxygen-sans,ubuntu,cantarell,helvetica neue,sans-serif;
+    background-color: #000;
+    
+  }
+}
+
+
+@media (max-width:500px) {
+  .container {
+    padding: 2em 0 2em;
+  }
+  .container h1 {
+    padding: 10px 1em;
+    font-size: 26px;
+    text-align: center;
+  }
+}

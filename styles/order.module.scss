@@ -1,0 +1,163 @@
+//
+.container {
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0;
+}
+
+.order-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 768px;
+  gap: 1rem;
+}
+
+.confirmation {
+  border: 2px dotted #008000;
+  min-width: 500px;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  padding: 2rem;
+  h4 {
+    color: #008000;
+    font-weight: 600;
+    font-size: 1.5rem;
+    margin: 0;
+  }
+}
+
+.order-summary {
+  gap: 10px;
+  display: grid;
+  border: 1px solid #d5dad5;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.order-contents {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-right: 1px solid #d5dad5;
+
+  h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  p {
+    font-size: 1rem;
+  }
+
+  &:nth-of-type(1) {
+    border-left: none;
+  }
+  &:nth-last-of-type(1) {
+    border-right: none;
+  }
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0;
+  h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #222;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+}
+
+.product-summary {
+}
+
+.summary-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #d5dad5;
+
+  p {
+    font-size: 1.1rem;
+    color: #222;
+    font-weight: 500;
+    margin: 0;
+  }
+}
+
+.summary-list {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #d5dad5;
+  p {
+    font-size: 1rem;
+    color: #222;
+    // font-weight: 500;
+    margin: 0;
+  }
+}
+
+.product-details {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 20%;
+}
+
+.details-list {
+  padding: 1rem 0;
+  h4 {
+    font-weight: 700;
+    line-height: 1.6;
+    font-size: 1rem;
+  }
+  ul li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 0;
+  }
+  ul li span {
+    &:nth-of-type(1) {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #222;
+    }
+    &:nth-of-type(3) {
+      font-size: 1rem;
+      font-weight: 400;
+      color: #444;
+    }
+  }
+}
+
+.product-details .price {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+
+@media (max-width:500px) {
+  .confirmation {
+    h4 {
+      text-align: center;
+    }
+  }
+  .order-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .confirmation {
+    min-width: 330px;
+  }
+  .product-summary {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}

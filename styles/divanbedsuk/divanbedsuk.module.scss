@@ -1,0 +1,56 @@
+.bigsaleimg {
+    .lastsection {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        p{
+            margin: 0;
+            padding: 0;
+        }
+    }
+    h3 {
+        font-size: 40px;
+        color: #222178;
+        font-weight: 600;
+        padding-top: 30px;
+    }
+    h2 {
+        font-size: 18px;
+        color: #222178;
+        font-weight: 600;
+        padding-top: 30px;
+    }
+    p {
+        color: #7A7A7A;
+    font-size: 18px;
+    padding-top: 10px;
+    a {
+        text-decoration: underline !important;
+        padding-left: 5px;
+        color: #0d6efd !important;
+    }
+    }
+    button {
+        border: 1px solid #222178;
+        padding: 12px 40px;
+        background-color: #222178;
+        color: #fff !important;
+        font-weight: 500;
+        text-transform: capitalize;
+        border-radius: 5px;
+    }
+    
+}
+
+@media (max-width:500px) {
+   .mwfulles {
+    width: 100%;
+   }
+   .bigsaleimg h3 {
+    font-size: 20px;
+   }
+   .lastsection {
+    img.mainlogos {
+        width: 150px;
+    }
+   }
+}

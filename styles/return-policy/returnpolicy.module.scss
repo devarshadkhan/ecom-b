@@ -1,0 +1,32 @@
+.returnpolicysection {
+    background-color: #000;
+    padding: 70px 0px 70px 0px;
+}
+.returnpolicysection h1 {
+    text-align: center;
+    color: #fff;
+    font-size: 70px;
+    font-weight: 600;
+}
+.returnpolicysection1 p {
+    font-weight: 400;
+    font-size: 18px;
+    color: #4B4B6F;
+    font-family: "Roboto", Sans-serif;
+    line-height: 34px;
+}
+.returnpolicysection1 h3 {
+    font-weight: 700;
+    font-size: 18px;
+    color: #4B4B6F;
+    font-family: "Roboto", Sans-serif;
+    margin-top: 30px;
+}
+.returnpolicysection1 {
+    margin-top: 30px;
+}
+@media (max-width:500px) {
+    .returnpolicysection h1 { 
+        font-size: 40px;
+    }
+}
